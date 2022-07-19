@@ -1,0 +1,16 @@
+.input {
+    height: 50px;
+    width: 100%;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    outline: none;
+    padding: 0 20px;
+    font-size: 20px;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.fieldset {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
