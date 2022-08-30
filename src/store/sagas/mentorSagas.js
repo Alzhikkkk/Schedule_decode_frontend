@@ -13,9 +13,9 @@ function* getMentors(){
 }
 
 
-function* createMentor({name}){
+function* createMentor({name, headers}){
     try{
-        const mentor = yield axios.post(`${BASE_URL}/api/mentors`, {full_name: name}).then(res => res.data);
+        const mentor = yield axios.post(`${BASE_URL}/api/mentors`, {full_name: name}, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
         yield put({type:types.RECIEVED_NEW_MENTOR , payload : mentor})
     }catch(e){
         yield put({type: types.FAILURE_CREATE_MENTOR , errors: e})
@@ -25,7 +25,7 @@ function* createMentor({name}){
 
 function* deleteMentor({id}){
     try{
-        yield axios.delete(`${BASE_URL}/api/mentors/${id}`).then(res => res.data);
+        yield axios.delete(`${BASE_URL}/api/mentors/${id}`, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
         yield put({type:types.SUCCESS_DELETE_MENTOR , payload: {id}})
     }catch(e){
         yield put({type: types.FAILURE_DELETE_MENTOR , errors: e})
@@ -34,7 +34,7 @@ function* deleteMentor({id}){
 
 function* updateMentor({id, name}){
     try{
-        yield axios.put(`${BASE_URL}/api/mentors`, {id, full_name: name}).then(res => res.data);
+        yield axios.put(`${BASE_URL}/api/mentors`, {id, full_name: name}, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
         yield put({type:types.SUCCESS_UPDATE_MENTOR , payload: {id, full_name: name}})
     }catch(e){
         yield put({type: types.FAILURE_UPDATE_MENTOR , errors: e})

@@ -5,7 +5,7 @@ import {BASE_URL} from '../../config/baseurl';
 
 function* createLesson({data}){
     try{
-        const lessons = yield axios.post(`${BASE_URL}/api/lesson-in-week`, data).then(res => res.data);
+        const lessons = yield axios.post(`${BASE_URL}/api/lesson-in-week`, data, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
         yield put({type:types.RECIEVED_NEW_LESSON_IN_WEEK , payload : lessons})
     }catch(e){
         console.log("SAGE: ", e)
@@ -15,7 +15,7 @@ function* createLesson({data}){
 
 function* createBusy({data}){
     try{
-        const busytimes = yield axios.post(`${BASE_URL}/api/busy-in-week`, data).then(res => res.data);
+        const busytimes = yield axios.post(`${BASE_URL}/api/busy-in-week`, data, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
         yield put({type:types.RECIEVED_NEW_BUSY_IN_WEEK , payload : busytimes})
     }catch(e){
         console.log("SAGE: ", e)
@@ -26,7 +26,7 @@ function* createBusy({data}){
 
 function* deleteLesson({id}){
     try{
-         yield axios.delete(`${BASE_URL}/api/lesson_in_week/${id}`).then(res => res.data);
+         yield axios.delete(`${BASE_URL}/api/lesson_in_week/${id}`, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
          yield put({type: types.SUCCESS_DELETE_LESSON, payload: {id} })
     }catch(e){
          yield put({type: types.FAILURE_DELETE_LESSON, errors: e})
@@ -36,7 +36,7 @@ function* deleteLesson({id}){
 
 function* deleteBusy({id}){
     try{
-         yield axios.delete(`${BASE_URL}/api/busy_in_week/${id}`).then(res => res.data);
+         yield axios.delete(`${BASE_URL}/api/busy_in_week/${id}`, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
          yield put({type: types.SUCCESS_DELETE_BUSY, payload: {id} })
     }catch(e){
          yield put({type: types.FAILURE_DELETE_BUSY, errors: e})
@@ -45,7 +45,7 @@ function* deleteBusy({id}){
 
 function* updateLesson({id, time, weekday, course_id, room_id, mentor_id, group_id}){
     try{
-         const lessons = yield axios.put(`${BASE_URL}/api/lesson_in_week`, {id, time, weekday, course_id, room_id, mentor_id, group_id}).then(res => res.data);
+         const lessons = yield axios.put(`${BASE_URL}/api/lesson_in_week`, {id, time, weekday, course_id, room_id, mentor_id, group_id}, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
          yield put({type: types.SUCCESS_UPDATE_LESSON, payload: lessons})
     }catch(e){
         yield put({type: types.FAILURE_UPDATE_LESSON, errors: e})
@@ -54,7 +54,7 @@ function* updateLesson({id, time, weekday, course_id, room_id, mentor_id, group_
 
 function* updateBusy({id, time, weekday, mentor_id, text}){
     try{
-         const busytimes = yield axios.put(`${BASE_URL}/api/busy_in_week`, {id, time, weekday, mentor_id, text}).then(res => res.data);
+         const busytimes = yield axios.put(`${BASE_URL}/api/busy_in_week`, {id, time, weekday, mentor_id, text}, {headers: {'authorization': `Bearer ${localStorage.getItem('token')}`}}).then(res => res.data);
          yield put({type: types.SUCCESS_UPDATE_BUSY, payload: busytimes})
     }catch(e){
         yield put({type: types.FAILURE_UPDATE_BUSY, errors: e})

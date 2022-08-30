@@ -5,6 +5,7 @@ import roomsReducers from './rooms.reducers';
 import coursesReducers from './course.reducers';
 import groupsReducers from './group.reducers';
 import lessonsReducers from './lesson.reducers';
+import loginAdminReducers from './loginAdmin.reducers';
 
 export default combineReducers({
     mentorsReducers,
@@ -12,5 +13,6 @@ export default combineReducers({
     roomsReducers,
     coursesReducers,
     groupsReducers,
-    lessonsReducers
+    lessonsReducers,
+    loginAdminReducers
 })

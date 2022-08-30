@@ -1,6 +1,8 @@
-import React , { useState } from 'react';
+import React , { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
 import { Layout, Menu } from 'antd';
+import exitButton from '../assets/exit.svg'
+import axios from 'axios';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -11,6 +13,7 @@ import {
 import Mentors from './mentors';
 
 const { Header, Sider, Content } = Layout;
+axios.defaults.headers.common['authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
 function Admin() {
     let navigate = useNavigate();
@@ -19,6 +22,19 @@ function Admin() {
         console.log("1", key)
         navigate(`/admin/${key}`)
     }
+
+    useEffect(() =>{
+        if(!localStorage.getItem('token')){
+            navigate('../login')
+        }
+    }, [])
+
+
+    const exit = () => {
+        localStorage.clear()
+        navigate('../login')
+    }
+
 
     return (
         <Layout>
@@ -59,6 +75,7 @@ function Admin() {
                         className: 'trigger',
                         onClick: () => setCollapsed(!collapsed),
                     })}
+                    <img src={exitButton} className='exitButton' onClick={exit}/>
                 </Header>
                 <Content
                     className="site-layout-background"

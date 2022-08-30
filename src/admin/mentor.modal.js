@@ -20,6 +20,8 @@ function MentorModal({mentor, isModalVisible , handleCancel, loading, createMent
     useEffect(() => {
         if(mentor)
             setName(mentor.full_name)
+        else
+            setName("")
     }, [mentor])
 
     useEffect(() => {

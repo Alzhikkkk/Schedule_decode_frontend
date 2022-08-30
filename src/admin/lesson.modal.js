@@ -49,7 +49,7 @@ function LessonModal({ isModalVisible ,
     console.log(rooms, courses, activeGroups, mentors)
 
     const handleOk = () => {
-        if(activeTab == 1){
+        if(activeTab === 1){
             if(!mentor){
                 createLessonAction({
                     course_id,
@@ -60,6 +60,7 @@ function LessonModal({ isModalVisible ,
                 })  
             }else{
                 // console.log(group_id)
+                
                 updateLessonAction({
                     id:mentor.id,
                     time: lessonInputs[0].time,
@@ -78,7 +79,6 @@ function LessonModal({ isModalVisible ,
                 lessonInputs
             })
           }else{
-              console.log("AROOOOO")
               updateBusyAction({
                   id:mentor.id,
                   mentor_id,
@@ -120,6 +120,15 @@ function LessonModal({ isModalVisible ,
         } 
     }, [loading || load])
 
+    useEffect(()=> {
+        console.log(activeTab)
+        if(mentor && mentor.text){
+            setActivetab(2)
+        }else{
+            setActivetab(1)
+        }
+    }, [mentor])
+
     useEffect(() => {
         if(mentor){
             console.log(mentor)
@@ -133,6 +142,16 @@ function LessonModal({ isModalVisible ,
                 setText(mentor.text)
             }
         setLessonInputs([{time: mentor.time, weekday: mentor.weekday}])
+        }else{
+            setCourse("")
+            setGroup("")
+            setMentor("")
+            setRoom("")
+            setLessonInputs([{
+                time: "",
+                weekday: ""
+            }])
+            setText("")
         }
     }, [mentor])
 
@@ -150,8 +169,9 @@ function LessonModal({ isModalVisible ,
     }
 
     const onChangeTime = (index, value) => {
-        lessonInputs[index].time = value;
-        setLessonInputs(lessonInputs)
+        const list = [...lessonInputs]
+        list[index].time = value;
+        setLessonInputs(list)
     }
 
     const addLesson = () => {
@@ -185,7 +205,7 @@ function LessonModal({ isModalVisible ,
                     Сохранить
                 </Button>,
         ]}>
-            <Tabs defaultActiveKey="1" onChange={onChange}>
+            <Tabs activeKey={`${activeTab}`} onChange={onChange}> 
                 <TabPane tab="Уроки" key="1">
                 <Form.Item validateStatus={errors && errors.course_id ? "error" : "success"} help={errors && errors.course_id ? errors.course_id : ""} key="100">
                 <Select
@@ -315,7 +335,7 @@ function LessonModal({ isModalVisible ,
                         optionFilterProp="children"
                         filterOption={(input, option) => option.children.includes(input)}
                         onChange={value => onChangeWeekday(index, value)}
-                        value={lessonInputs[0].weekday ? lessonInputs[0].weekday : null}
+                        value={lessonInputs[index].weekday ? lessonInputs[index].weekday : undefined}
                     >
                         {weekDays.map(item => <Option value={item} key={item}>{item}</Option>)}
                     </Select>
@@ -336,7 +356,7 @@ function LessonModal({ isModalVisible ,
                         optionFilterProp="children"
                         filterOption={(input, option) => option.children.includes(input)}
                         onChange={value => onChangeTime(index, value)}
-                        value={lessonInputs[0].time ? lessonInputs[0].time : null}
+                        value={lessonInputs[index].time ? lessonInputs[index].time : undefined}
                     >
                         {time.map(item => {
                             let t = item.split(" ");
@@ -345,6 +365,7 @@ function LessonModal({ isModalVisible ,
                         })}
                     </Select>
                 </Form.Item>
+                { mentor === null &&
                 <CloseOutlined
                 onClick={() => deleteLesson(index)}
                 style={{
@@ -353,9 +374,11 @@ function LessonModal({ isModalVisible ,
                     right: "-18px",
                     top: "13px",
                     cursor: "pointer"
-                }}/>
+                }}/>}
             </div>)}
+            { mentor === null &&
             <Button onClick={addLesson}>Add</Button>
+            }
         </Modal>
     )
 }
