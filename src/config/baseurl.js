@@ -1,1 +1,1 @@
-export const BASE_URL='http://api.alzhik.site'
+export const BASE_URL='https://api.alzhik.site'
