@@ -4,6 +4,6 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
 RUN npm i
-RUN npm run build
+RUN npm install -g serve --save
 
-CMD ["npx", "serve", "build"]
+CMD ["npm", "start"]
