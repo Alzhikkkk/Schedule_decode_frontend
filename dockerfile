@@ -6,4 +6,10 @@ COPY ./ ./
 RUN npm i
 RUN npm install -g serve --save
 
-CMD ["npm", "start"]
+RUN npm run build
+
+FROM nginx:1.17.8-alpine
+COPY --from=build ./build /var/www/html/react
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+# CMD ["npm", "start"]
